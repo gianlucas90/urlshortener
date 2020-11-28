@@ -56,17 +56,19 @@ app.post('/api/shorturl/new', function (req, res, next) {
   console.log(req.body.url);
   const input = req.body.url;
   const reg = /^https:\/\//;
-  if (!reg.test(input)) return res.status(400).json({ error: 'invalid url' });
-  const url = new URL(input);
-
-  dns.lookup(url.host, async (err, address, family) => {
-    if (err) {
-      res.status(400).json({ error: 'invalid url' });
-    } else {
-      const newUrl = await Url.create({ original_url: url.href });
-      res.status(201).json({ original_url: url.href, short_url: newUrl._id });
-    }
-  });
+  if (reg.test(input)) {
+    const url = new URL(input);
+    dns.lookup(url.host, async (err, address, family) => {
+      if (err) {
+        res.status(400).json({ error: 'invalid url' });
+      } else {
+        const newUrl = await Url.create({ original_url: url.href });
+        res.status(201).json({ original_url: url.href, short_url: newUrl._id });
+      }
+    });
+  } else {
+    return res.status(400).json({ error: 'invalid url' });
+  }
 });
 
 app.get('/api/shorturl/:id', function (req, res) {
