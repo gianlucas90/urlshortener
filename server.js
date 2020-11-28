@@ -54,14 +54,13 @@ app.get('/api/hello', function (req, res) {
 app.post('/api/shorturl/new', function (req, res, next) {
   const input = req.body.url;
   const reg = /^https:\/\//;
-  if (!reg.test(input)) return res.status(400).json({ error: 'invalid URL' });
+  if (!reg.test(input)) return res.status(400).json({ error: 'invalid url' });
   const url = new URL(input);
 
   dns.lookup(url.host, async (err, address, family) => {
     if (err) {
-      res.status(400).json({ error: 'invalid URL' });
+      res.status(400).json({ error: 'invalid url' });
     } else {
-      console.log('address: %j family: IPv%s', address, family);
       const newUrl = await Url.create({ original_url: url.href });
       res.status(201).json({ original_url: url.href, short_url: newUrl._id });
     }
