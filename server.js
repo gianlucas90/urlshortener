@@ -43,7 +43,7 @@ app.use('/public', express.static(`${process.cwd()}/public`));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  console.log(req);
+  console.log(req.body.url);
   next();
 });
 
