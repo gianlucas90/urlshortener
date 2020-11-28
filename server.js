@@ -58,7 +58,7 @@ app.get('/api/hello', function (req, res) {
 
 app.post('/api/shorturl/new', function (req, res, next) {
   const input = req.body.url;
-  const reg = /^https:\/\//;
+  const reg = /^http/;
   if (reg.test(input)) {
     const url = new URL(input);
     dns.lookup(url.host, async (err, address, family) => {
