@@ -42,6 +42,11 @@ app.use(cors());
 app.use('/public', express.static(`${process.cwd()}/public`));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  console.log(req);
+  next();
+});
+
 app.get('/', function (req, res) {
   res.sendFile(process.cwd() + '/views/index.html');
 });
@@ -52,8 +57,6 @@ app.get('/api/hello', function (req, res) {
 });
 
 app.post('/api/shorturl/new', function (req, res, next) {
-  console.log(req.body);
-  console.log(req.body.url);
   const input = req.body.url;
   const reg = /^https:\/\//;
   if (reg.test(input)) {
@@ -72,7 +75,6 @@ app.post('/api/shorturl/new', function (req, res, next) {
 });
 
 app.get('/api/shorturl/:id', function (req, res) {
-  console.log(req.params);
   const id = req.params.id;
   Url.findById(id, function (err, url) {
     if (err) return console.error(err);
