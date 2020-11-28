@@ -52,6 +52,8 @@ app.get('/api/hello', function (req, res) {
 });
 
 app.post('/api/shorturl/new', function (req, res, next) {
+  console.log(req.body);
+  console.log(req.body.url);
   const input = req.body.url;
   const reg = /^https:\/\//;
   if (!reg.test(input)) return res.status(400).json({ error: 'invalid url' });
@@ -68,6 +70,7 @@ app.post('/api/shorturl/new', function (req, res, next) {
 });
 
 app.get('/api/shorturl/:id', function (req, res) {
+  console.log(req.params);
   const id = req.params.id;
   Url.findById(id, function (err, url) {
     if (err) return console.error(err);
