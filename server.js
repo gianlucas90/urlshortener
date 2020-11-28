@@ -63,14 +63,14 @@ app.post('/api/shorturl/new', function (req, res, next) {
     const url = new URL(input);
     dns.lookup(url.host, async (err, address, family) => {
       if (err) {
-        res.status(400).json({ error: 'invalid url' });
+        res.json({ error: 'invalid url' });
       } else {
         const newUrl = await Url.create({ original_url: url.href });
-        res.status(201).json({ original_url: url.href, short_url: newUrl._id });
+        res.json({ original_url: url.href, short_url: newUrl._id });
       }
     });
   } else {
-    return res.status(400).json({ error: 'invalid url' });
+    return res.json({ error: 'invalid url' });
   }
 });
 
